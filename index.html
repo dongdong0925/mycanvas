@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="zh-hans">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="xxx" width="600" height="400"></canvas>
+    <div id="actions" class="actions">
+        <button id="eraser">橡皮擦</button>
+        <button id="brush">画笔</button>
+        <button id="empty">清空</button>
+        <button id="save">保存</button>
+        
+
+    </div>
+    <div id="colors" class="colors">
+        <button id="red" style="background-color: red;">红色</button>
+        <button id="white" style="background-color: white;">白色</button>
+        <button id="blueviolet" style="background-color: blueviolet;">紫色</button>
+        <button id="blue" style="background-color: blue;">蓝色</button>
+        <button id="yellow" style="background-color: darkorange;">黄色</button>
+        <button id="aqua" style="background-color: aqua;">浅蓝绿色</button>
+        <button id="black" style="background-color: black;">黑色</button>
+    </div>
+    <div id="size" class="size">
+        <button id="0.5">0.5</button>
+        <button id="two">2.0</button>
+        <button id="four">4.0</button>
+        <button id="eight">8.0</button>
+        
+    </div>
+
+</body>
+<script>
+    var yyy = document.getElementById('xxx');
+    var context = yyy.getContext('2d');
+    var a = document.createElement('a')
+     var using = false
+    var lastPoint = {x: undefined, y: undefined}
+
+    //画笔颜色
+   red.onclick = function(){context.strokeStyle = 'red'}
+   white.onclick = function(){context.strokeStyle = 'white'}
+   blueviolet.onclick = function(){context.strokeStyle = 'blueviolet'}
+   blue.onclick = function(){context.strokeStyle = 'blue'}
+   aqua.onclick = function(){context.strokeStyle = 'aqua'}
+   yellow.onclick = function(){context.strokeStyle = 'darkorange'}
+   black.onclick = function(){context.strokeStyle = 'black'}
+
+  //画笔粗细
+  0.5.onclick = function(){context.lineWidth = 0.5}
+  four.onclick = function (){context.lineWidth = 4}
+  eight.onclick = function(){context.lineWidth = 8}
+  two.onclick = function(){context.lineWidth = 2}
+
+    //监听窗口的大小
+    window.onresize = function(){
+        setcavanssize()
+    }
+    //设置宽高
+    function setcavanssize(){
+        var pageWidth = document.documentElement.clientWidth
+        var pageHeight = document.documentElement.clientHeight
+        //获取页面宽高的方法之一
+        yyy.width = pageWidth
+        yyy.height = pageHeight
+
+        
+    }
+    //监听画布清空按钮的点击
+    empty.onclick = function(){
+        clearCanvas()
+    }
+    function clearCanvas(){
+       yyy.width = yyy.width
+       yyy.height = yyy.height
+    }
+    //监听保存按钮的点击
+    save.onclick = function(){
+        var a = document.createElement('a')
+        a.download = 'xxx'
+        a.href = yyy.toDataURL('image/jpeng')
+        yyy.appendChild(a)
+        a.click()
+        yyy.removeChild(a)
+    }
+
+    //按下鼠标
+    yyy.onmousedown = function(aaa){
+        var x = aaa.clientX
+        var y = aaa.clientY
+        if(eraserEnabled){
+            using =true
+            context.clearRect(x-5, y-5, 10, 10)
+        } else {
+            using = true
+            lastPoint = {"x":x,"y":y}
+
+            
+        }
+
+    }
+    
+    //移动鼠标
+    yyy.onmousemove = function(aaa){
+            var x = aaa.clientX
+            var y = aaa.clientY
+            if(eraserEnabled){
+                if (using){
+                    context.clearRect(x-5, y-5, 10, 10)
+
+                }
+            } else {
+                if(using){
+                    var newPoint = {"x":x,"y":y}
+                    drawLine(lastPoint.x, lastPoint.y, newPoint.x, newPoint.y)
+                    lastPoint = newPoint
+                }
+            }
+    }
+
+
+    //松开鼠标
+    yyy.onmouseup = function(aaa){
+        using = false
+    }
+    
+    //画圆
+   /* function drawCircle(x, y, radius){
+        context.beginPath()
+        context.fillStyle = 'black'
+        context.arc(x, y, radius, 0, Math.PI * 2);
+        context.fill()
+
+    }*/
+
+
+    //画线
+    function drawLine(x1, y1, x2, y2){
+        context.beginPath();
+        //context.strokeStyle = 'black'
+        context.moveTo(x1, y1)//起点
+        //context.lineWidth = 5
+        context.lineTo(x2, y2)//终点
+        context.stroke()
+        context.closePath()
+    }
+
+    //点击橡皮擦监听
+    var eraserEnabled = false
+    eraser.onclick = function(){
+        eraserEnabled = true
+        actions.className = 'actions x'
+    }
+    brush.onclick = function(){
+        eraserEnabled = false
+        actions.className = 'actions'
+
+    }
+</script>
+</html>

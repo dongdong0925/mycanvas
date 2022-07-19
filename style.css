@@ -1,0 +1,31 @@
+body{margin: 1;}
+#xxx{
+   background: rgb(155, 80, 80);
+   display: block;
+   width: 600;
+   height: 300;
+   
+}
+.actions{
+   position: fixed;
+   bottom: 0;
+
+}
+.actions > #brush{
+   display: none;
+}
+.actions.x > #brush{
+   display: inline-block;
+}
+.actions.x > #eraser{
+   display: none;
+}
+.colors{
+   position: fixed;
+   bottom:1cm
+
+}
+.size{
+   position: fixed;
+   bottom: 2cm;
+}
